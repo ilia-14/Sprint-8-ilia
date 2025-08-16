@@ -25,7 +25,7 @@ func (s ParcelStore) Add(p Parcel) (int, error) {
 }
 
 func (s ParcelStore) Get(number int) (Parcel, error) {
-	sqlStmt := `SELECT number, client, status, address, created_at FROM parcels WHERE number = $1 LIMIT 1`
+	sqlStmt := `SELECT number, client, status, address, created_at FROM parcels WHERE number = $1`
 
 	var p Parcel
 	err := s.db.QueryRow(sqlStmt, number).Scan(&p.Number, &p.Client, &p.Status, &p.Address, &p.CreatedAt)
@@ -53,6 +53,10 @@ func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 			return nil, err
 		}
 		parcels = append(parcels, p)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return parcels, nil
