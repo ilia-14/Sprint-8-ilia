@@ -43,17 +43,17 @@ func TestAddGetDelete(t *testing.T) {
 
 	// Добавляем посылку
 	id, err := store.Add(parcel)
-	require.Nil(t, err)
+	require.NoError(t, err)
 	require.Greater(t, id, 0)
 
 	// Получаем добавленную посылку
 	got, err := store.Get(id)
 	require.NoError(t, err)
-	//require.Equal(t, parcel.Number, got.Number)
-	require.Equal(t, parcel.Client, got.Client)
-	require.Equal(t, parcel.Status, got.Status)
-	require.Equal(t, parcel.Address, got.Address)
-	//require.Equal(t, parcel.CreatedAt, got.CreatedAt)
+	//assert.Equal(t, parcel.Number, got.Number)
+	assert.Equal(t, parcel.Client, got.Client)
+	assert.Equal(t, parcel.Status, got.Status)
+	assert.Equal(t, parcel.Address, got.Address)
+	assert.Equal(t, parcel.CreatedAt, got.CreatedAt)
 
 	// Удаляем посылку
 	err = store.Delete(id)
@@ -143,7 +143,8 @@ func TestGetByClient(t *testing.T) {
 
 	// Получаем посылки по клиенту
 	gotParcels, err := store.GetByClient(client)
-	require.Nil(t, err)
+	require.NoError(t, err)
+	assert.Len(t, gotParcels, len(parcels))
 
 	// Проверяем соответствие посылок
 	assert.ElementsMatch(t, parcels, gotParcels)
